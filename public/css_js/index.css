@@ -1,0 +1,144 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    width: 100vw;
+    max-width: 100vw;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.images {
+    width: 80%;
+    margin-top: 4rem;
+    display: grid;
+    grid-gap: 1.5rem;
+    column-gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+}
+
+.image {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+    width: 100%;
+    background: #F9F8FD;
+    cursor: move;
+    margin-bottom: 1rem;
+}
+
+.images .image .top {
+    height: 82% !important;
+    width: 100%;
+    position: relative;
+}
+
+.images .image .top img {
+    width: 100% !important;
+    height: 200px !important;
+    overflow: hidden;
+}
+
+.images .image .top i {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(-20%, 20%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .7rem;
+    color: #F2709C;
+    background: #fff;
+    border: 1px solid #F2709C;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.images .image .bottom {
+    height: 80px !important;
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #F9F8FD;
+}
+
+.images .image .bottom input {
+    padding: .5rem;
+    width: 100%;
+    outline: none;
+    border: 1px solid #b2b1b6;
+    border-radius: 5px;
+}
+
+.images .image .bottom input::placeholder {
+    color: #7d7b80;
+}
+
+.images .upload {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 250px;
+    width: 100%;
+    background: #F9F8FD;
+    cursor: move;
+    border: 2px dashed #F2709C;
+    text-align: center;
+}
+
+.images .upload .body {
+    width: 80%;
+}
+
+.images .upload .body input {
+    display: none;
+}
+
+.images .upload .body label {
+    color: #F2709C;
+}
+
+.dragEnter {
+    background: #cdadeb !important;
+}
+
+.progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(0, -150%);
+	background-color: #d8d8d8;
+	border-radius: 20px;
+	position: relative;
+	margin: 15px 0;
+	height: 15%;
+	width: 100%;
+}
+
+.progress-done {
+	background: linear-gradient(to left, #F2709C, #FF9472);
+	box-shadow: 0 3px 3px -5px #F2709C, 0 2px 5px #F2709C;
+	border-radius: 20px;
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+	width: 0;
+	opacity: 0;
+	transition: 1s ease 0.3s;
+}
+
+label {
+    cursor: pointer;
+}
