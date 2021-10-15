@@ -8,12 +8,17 @@ app.set("view engine", 'ejs')
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.get("/", (req,res) => {
+app.get("/", (req, res) => {
     res.render("index")
 });
 
-app.post("/upload", upload.single("image"), async(req, res) => {
-    console.log(req.file);
+app.post("/upload", upload.array("images"), async(req, res) => {
+    const body = JSON.parse(req.body.info)
+    console.log(body)
+    console.log(req.body.info)
+    for (let info of body.body) {
+        console.log(info)
+    }
     res.send("done")
 });
 

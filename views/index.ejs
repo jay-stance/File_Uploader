@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File Uploader</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.10.2/Sortable.min.js"></script>
     <link rel="stylesheet" href="/css_js/index.css">
 </head>
+
 <body>
 
     <div class="images wrapper">
@@ -17,21 +19,23 @@
             <div class="body">
                 <input type="file" name="image" multiple="true" accept="image/*" id="image">
                 <p>
-                    <i class="fas fa-cloud-upload-alt"></i>
-                    Drop file here or <label for="image">Upload</label>
+                    <i class="fas fa-cloud-upload-alt"></i> Drop file here or <label for="image">Upload</label>
                 </p>
             </div>
         </div>
 
 
     </div>
+    <p class="uploadFile">Upload</p>
+
 
     <script>
         const dragArea = document.querySelector(".wrapper");
         new Sortable(dragArea, {
-          animation: 350
+            animation: 350
         });
-      </script>
+    </script>
     <script src="/css_js/index.js"></script>
 </body>
+
 </html>
