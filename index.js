@@ -1,56 +1,21 @@
 const image_drop = document.querySelector(".images .upload");
 const imageFile_Choose = document.querySelector("#image");
+const sned = document.getElementById("send")
+const uploadFile_btn = document.querySelector(".uploadFile");
 
 imageFile_Choose.addEventListener("change", imageFile_Choose_change)
 image_drop.addEventListener("dragenter", profile_drag_enter)
 image_drop.addEventListener("dragover", profile_dragover)
 image_drop.addEventListener("dragleave", profile_dragleave)
 image_drop.addEventListener("drop", profile_drop)
+uploadFile_btn.addEventListener("click", uploadFile)
 
-let file_list = []
+let data = {};
+let _id = 0;
 
-function imageFile_Choose_change(e){
+function imageFile_Choose_change(e) {
     const files = e.target.files;
-    for (file of files){
-        if (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg') {
-            let src = URL.createObjectURL(file)
-            const images = document.querySelector(".images");
-
-            const first = `        
-                <div class="image item">
-                    <div class="top">
-                        <i class="fas fa-times"></i>
-                        <img src=${src} alt="">
-                        <div class="progress">
-                            <div class="progress-done" data-done="70">
-                                70%
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bottom">
-                        <input type="text" placeholder="Enter description" >
-                    </div>
-                </div>
-                `
-            const previous_images = images.innerHTML;
-            images.innerHTML = first + previous_images
-
-            const close_icons = document.querySelectorAll(".images .image .top i")
-            const image_drop = document.querySelector(".images .upload");
-            const imageFile_Choose = document.querySelector("#image");
-
-            // imageFile_Choose.addEventListener("change", imageFile_Choose_change)
-            image_drop.addEventListener("dragenter", profile_drag_enter)
-            image_drop.addEventListener("dragover", profile_dragover)
-            image_drop.addEventListener("drop", profile_drop);
-            close_icons.forEach(icon => icon.addEventListener("click", del_img))
-            imageFile_Choose.addEventListener("change", imageFile_Choose_change)
-
-            const progress = document.querySelector('.progress-done');
-            progress.style.width = progress.getAttribute('data-done') + '%';
-            progress.style.opacity = 1;
-        }
-    }
+    add_chosen_image(files);
 }
 
 function profile_dragover(e) {
@@ -72,7 +37,9 @@ function profile_drag_enter(e) {
     console.log("Drag enter")
 }
 
-function del_img(){
+function del_img() {
+    const id = this.parentElement.parentElement.id;
+    delete data[id]
     this.parentElement.parentElement.style.display = "none"
 }
 
@@ -82,15 +49,19 @@ function profile_drop(e) {
     image_drop.classList.remove("dragEnter")
     const data_transfer = e.dataTransfer;
     const files = data_transfer.files;
+    add_chosen_image(files);
+}
 
+async function add_chosen_image(files) {
     if (files.length > 0) {
-        for (file of files){
+        for await (let file of files) {
             if (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg') {
                 let src = URL.createObjectURL(file)
                 const images = document.querySelector(".images");
 
+                _id = _id + 1
                 const first = `        
-                    <div class="image item">
+                    <div id='id${_id }' class="image item">
                         <div class="top">
                             <i class="fas fa-times"></i>
                             <img src=${src} alt="">
@@ -111,6 +82,7 @@ function profile_drop(e) {
                 const close_icons = document.querySelectorAll(".images .image .top i")
                 const image_drop = document.querySelector(".images .upload");
                 const imageFile_Choose = document.querySelector("#image");
+                // const description = document.querySelector(`#${_id} .bottom input`).value.trim();
 
                 // imageFile_Choose.addEventListener("change", imageFile_Choose_change)
                 image_drop.addEventListener("dragenter", profile_drag_enter)
@@ -120,13 +92,49 @@ function profile_drop(e) {
                 imageFile_Choose.addEventListener("change", imageFile_Choose_change)
 
                 const progress = document.querySelector('.progress-done');
-                progress.style.width = progress.getAttribute('data-done') + '%';
                 progress.style.opacity = 1;
+
+
+                add_file(file, _id);
             }
         }
     }
 
 }
 
+function add_file(file, __id) {
+    __id = `id${__id}`
+    let file_data = { __id, file }
+    data[__id] = file_data;
+}
 
+function uploadFile() {
+    console.log(data)
+    let body = [];
+    const images = document.querySelectorAll(".images .image")
+    let formdata = new FormData();
+    images.forEach(image => {
+        let cuurent_file = data[image.id];
+        console.log(cuurent_file)
+        let info = {
+            id: cuurent_file.__id,
+            description: document.querySelector(`#${cuurent_file.__id} input`).value.trim()
+        }
+        body.push(info);
+        formdata.append("images", cuurent_file.file)
+    })
+    formdata.append("info", JSON.stringify({ body }));
+    // formdata now has the files and description in an orderly way
+
+    fetch("/upload", {
+            method: "POST",
+            body: formdata
+        })
+        .then(response => {
+            response.text()
+                .then(data => {
+                    console.log(data)
+                })
+        })
+}
 
