@@ -53,13 +53,26 @@ function profile_drop(e) {
 }
 
 async function add_chosen_image(files) {
+    let images_desc = []
     if (files.length > 0) {
+        const images = document.querySelectorAll(".images .image")
+        images.forEach(image => {
+            const desc = image.querySelector(`input`).value === "";
+            if (!desc) {
+                images_desc.push({
+                    id: image.id,
+                    description: image.querySelector(`input`).value.trim()
+                })
+            }
+        })
+
+
         for await (let file of files) {
             if (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg') {
                 let src = URL.createObjectURL(file)
                 const images = document.querySelector(".images");
 
-                _id = _id + 1
+                _id = _id + 1;
                 const first = `        
                     <div id='id${_id }' class="image item">
                         <div class="top">
@@ -97,6 +110,12 @@ async function add_chosen_image(files) {
 
                 add_file(file, _id);
             }
+        }
+
+        if (images_desc) {
+            images_desc.forEach(image => {
+                document.querySelector(`#${image.id} input`).value = image.description
+            })
         }
     }
 
@@ -137,4 +156,3 @@ function uploadFile() {
                 })
         })
 }
-
