@@ -158,3 +158,9 @@ label {
     font-family: "poppins";
     margin-right: 8rem;
 }
+
+.uploadFile:hover {
+    color: #fff;
+    background: #F2709C;
+    transition: .5s all ease-in;
+}
