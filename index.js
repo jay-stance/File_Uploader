@@ -12,6 +12,7 @@ uploadFile_btn.addEventListener("click", uploadFile)
 
 let data = {};
 let _id = 0;
+const post_url = "/upload";
 
 function imageFile_Choose_change(e) {
     const files = e.target.files;
@@ -133,19 +134,19 @@ function uploadFile() {
     const images = document.querySelectorAll(".images .image")
     let formdata = new FormData();
     images.forEach(image => {
-        let cuurent_file = data[image.id];
-        console.log(cuurent_file)
+        let current_file = data[image.id];
+        console.log(current_file)
         let info = {
-            id: cuurent_file.__id,
-            description: document.querySelector(`#${cuurent_file.__id} input`).value.trim()
-        }
+            filename: current_file.file.name,
+            description: document.querySelector(`#${current_file.__id} input`).value.trim()
+            }
         body.push(info);
-        formdata.append("images", cuurent_file.file)
+        formdata.append("images", current_file.file)
     })
     formdata.append("info", JSON.stringify({ body }));
     // formdata now has the files and description in an orderly way
 
-    fetch("/upload", {
+    fetch(post_url, {
             method: "POST",
             body: formdata
         })
