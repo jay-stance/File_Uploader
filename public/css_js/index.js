@@ -126,6 +126,7 @@ function uploadFile() {
     formdata.append("info", JSON.stringify({ body }));
     // formdata now has the files and description in an orderly way
 
+    //John: you can use the below function here to send it to the PHP server via the API endpoint
     fetch("/upload", {
             method: "POST",
             body: formdata
